@@ -1,0 +1,93 @@
+1 复制3个文件（BPP.C 、 BPP.exe 、 Define.h）到工程Demo目录下
+
+2 手动修改Define.h文件里面的相应内容（工程名等等）
+   初始值：
+	#define VER_Major    0
+	#define VER_Minor    0
+	#define VER_Release  0     
+	#define VER_Build    1 
+
+                                                      -----Debug  下 添加 BPP Define.h
+3 工程属性->配置属性->生成事件->预先生成事件 ->>命令行 
+                                                      -----Release下 添加 BPP -Release Define.h
+
+
+4 选择资源视图 ->右键Demo.rc ->资源包括
+	     在"只读符号指令(R)":里面添加 #include"Define.h" 
+             在"编译时指令(C):"里添加如下代码：
+
+//=========================================//
+LANGUAGE LANG_NEUTRAL, SUBLANG_DEFAULT
+#pragma code_page(DEFAULT)
+VS_VERSION_INFO VERSIONINFO
+FILEVERSION VER_Major, VER_Minor, VER_Build, VER_Release
+PRODUCTVERSION VER_Major, VER_Minor, VER_Build, VER_Release
+FILEFLAGSMASK VS_FFI_FILEFLAGSMASK
+FILEFLAGS 0
+FILEOS VOS__WINDOWS32
+FILETYPE 0
+FILESUBTYPE VFT2_UNKNOWN
+BEGIN
+    BLOCK "StringFileInfo"
+     BEGIN
+     	BLOCK "040004e4"
+        BEGIN
+          VALUE "FileVersion", STR_Version
+          VALUE "FileDescription", STR_Description            
+          VALUE "ProductName", STR_AppName            
+          VALUE "ProductVersion", STR_Version            
+          VALUE "CompanyName", STR_Corporation            
+          VALUE "LegalCopyright", STR_Copyright            
+          VALUE "Comments", "Powered by " STR_Author "."            
+          VALUE "OriginalFilename", STR_OriginalFilename    
+          END    
+        END    
+      BLOCK "VarFileInfo"
+    	 BEGIN        
+    		 VALUE "Translation", 0x0400, 0x04e4   
+     END
+END
+
+//////////////////////////////////////////////////////////////////////////////////////
+
+
+
+5  工程资源文件 Demo.rc  并且屏蔽如下代码
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+/*
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x40004L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "080404B0"
+        BEGIN
+            VALUE "CompanyName", "TODO: <公司名>"
+            VALUE "FileDescription", "TODO: <文件说明>"
+            VALUE "FileVersion", "1.0.0.1"
+            VALUE "InternalName", "GpsList.dll"
+            VALUE "LegalCopyright", "TODO: (C) <公司名>。保留所有权利。"
+            VALUE "OriginalFilename", "GpsList.dll"
+            VALUE "ProductName", "TODO: <产品名>"
+            VALUE "ProductVersion", "1.0.0.1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x804, 1200
+    END
+END
+*/
